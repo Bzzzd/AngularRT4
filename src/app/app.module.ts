@@ -11,7 +11,6 @@ import { NavbarComponent } from './components/navbar/navbar.component';
 import { HomeComponent } from './components/home/home.component';
 import { FrontComponent } from './components/front/front.component';
 import { AdminComponent } from './components/admin/admin.component';
-import { MasterDetailsComponent } from './cv/master-details/master-details.component';
 import { DetailCvComponent } from './cv/detail-cv/detail-cv.component';
 import { NF404Component } from './components/nf404/nf404.component';
 import { AppRoutingModule } from './app-routing.module';
@@ -21,12 +20,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { ToastrModule } from 'ngx-toastr';
 import { ListCvEmbaucheComponent } from './cv/list-cv-embauche/list-cv-embauche.component';
 import { LoginComponent } from './login/login.component';
-import { AutocompleteComponent } from './components/autocomplete/autocomplete.component';
-import { MergeComponent } from './components/merge/merge.component';
-import { ProductsComponent } from './components/products/products.component';
-import { UpdateCvComponent } from './cv/update-cv/update-cv.component';
-import { AddCvComponent } from './cv/add-cv/add-cv.component';
 import { tokenInjectionInterceptorProvider } from './token-injection.interceptor';
+import { ImagesComponent } from './components/images/images.component';
 
 @NgModule({
   declarations: [
@@ -40,16 +35,11 @@ import { tokenInjectionInterceptorProvider } from './token-injection.interceptor
     HomeComponent,
     FrontComponent,
     AdminComponent,
-    MasterDetailsComponent,
     DetailCvComponent,
     NF404Component,
     ListCvEmbaucheComponent,
     LoginComponent,
-    AutocompleteComponent,
-    MergeComponent,
-    ProductsComponent,
-    UpdateCvComponent,
-    AddCvComponent,
+    ImagesComponent,
   ],
   imports: [
     BrowserModule,

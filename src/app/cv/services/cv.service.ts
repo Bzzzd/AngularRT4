@@ -26,10 +26,12 @@ export class CvService {
   getCvs(): Observable<Cv[]> {
     return this.httpClient.get<Cv[]>(MES_CONSTANTES.url).pipe(
       catchError(() => {
-        return of(this.cvs);
+        return of(this.defaultCv);
       })
     );
   }
+
+  
 
   setCvs(cvs: Cv[]) {
     this.cvs = cvs;

@@ -21,25 +21,19 @@ export class DetailCvComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    // const id = this.activatedRouter.snapshot.params["id"]
-    // this.cvService.getCvById(id).subscribe(
-    //   {
-    //     next : (cv) => {
-    //       this.cv = cv as Cv;
-    //     },
-    //     error: (error) => {
-    //       this.toastr.error("An error Occured While fetching Data")
-    //     }
-    //   }
-    // )
-    this.activatedRouter.data.subscribe((value) => {
-      this.cv = value['cv'];
-    });
+    const id = this.activatedRouter.snapshot.params["id"]
+    this.cvService.getCvById(id).subscribe(
+      {
+        next : (cv) => {
+          this.cv = cv as Cv;
+        },
+        error: (error) => {
+          this.toastr.error("An error Occured While fetching Data")
+        }
+      }
+    )
   }
-  updateCv(): void {
-    const link = ['cv', 'update', this.cv?.id];
-    this.router.navigate(link);
-  }
+
 
   deleteCv(): void {
     const id = this.activatedRouter.snapshot.params['id'];

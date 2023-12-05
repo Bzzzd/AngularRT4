@@ -1,0 +1,424 @@
+warning: in the working copy of 'src/app/app.module.ts', LF will be replaced by CRLF the next time Git touches it
+[1mdiff --git a/angular.json b/angular.json[m
+[1mindex 19caa86..a7423b1 100644[m
+[1m--- a/angular.json[m
+[1m+++ b/angular.json[m
+[36m@@ -94,5 +94,8 @@[m
+         }[m
+       }[m
+     }[m
+[32m+[m[32m  },[m
+[32m+[m[32m  "cli": {[m
+[32m+[m[32m    "analytics": "f63ae403-4048-4bbd-9baf-2b99437bde7f"[m
+   }[m
+ }[m
+[1mdiff --git a/src/app/app-routing.module.ts b/src/app/app-routing.module.ts[m
+[1mindex c345961..3ed5401 100644[m
+[1m--- a/src/app/app-routing.module.ts[m
+[1m+++ b/src/app/app-routing.module.ts[m
+[36m@@ -1,18 +1,12 @@[m
+ import { NgModule } from '@angular/core';[m
+[31m-import { CanDeactivate, RouterModule, Routes } from '@angular/router';[m
+[32m+[m[32mimport { RouterModule, Routes } from '@angular/router';[m
+ import { CvComponent } from './cv/cv/cv.component';[m
+ import { HomeComponent } from './components/home/home.component';[m
+ import { AdminComponent } from './components/admin/admin.component';[m
+ import { NF404Component } from './components/nf404/nf404.component';[m
+ import { DetailCvComponent } from './cv/detail-cv/detail-cv.component';[m
+ import { LoginComponent } from './login/login.component';[m
+[31m-import { MergeComponent } from './components/merge/merge.component';[m
+[31m-import { ProductsComponent } from './components/products/products.component';[m
+[31m-import { UpdateCvComponent } from './cv/update-cv/update-cv.component';[m
+[31m-import { AddCvComponent } from './cv/add-cv/add-cv.component';[m
+[31m-import { MasterDetailsComponent } from './cv/master-details/master-details.component';[m
+[31m-import { cvListResolver } from './cv/resolver/cv-list.resolver';[m
+[31m-import { cvDetailsResolver } from './cv/resolver/cv-details.resolver';[m
+[32m+[m[32mimport { ImagesComponent } from './components/images/images.component';[m
+ [m
+ // pipe[m
+ const routes: Routes = [[m
+[36m@@ -23,32 +17,10 @@[m [mconst routes: Routes = [[m
+       {[m
+         path: '',[m
+         component: CvComponent,[m
+[31m-        resolve: { cvs: cvListResolver },[m
+[31m-      },[m
+[31m-      {[m
+[31m-        path: 'list',[m
+[31m-        component: MasterDetailsComponent,[m
+[31m-        resolve: { cvs: cvListResolver },[m
+[31m-        children: [[m
+[31m-          {[m
+[31m-            path: ':id',[m
+[31m-            resolve: { cv: cvDetailsResolver },[m
+[31m-            component: DetailCvComponent,[m
+[31m-          },[m
+[31m-        ],[m
+[31m-      },[m
+[31m-      {[m
+[31m-        path: 'add',[m
+[31m-        component: AddCvComponent,[m
+[31m-      },[m
+[31m-      {[m
+[31m-        path: 'update/:id',[m
+[31m-        component: UpdateCvComponent,[m
+       },[m
+       {[m
+         path: ':id',[m
+         component: DetailCvComponent,[m
+[31m-        resolve: { cv: cvDetailsResolver },[m
+       },[m
+     ],[m
+   },[m
+[36m@@ -59,12 +31,11 @@[m [mconst routes: Routes = [[m
+     path: 'admin',[m
+     component: AdminComponent,[m
+   },[m
+[32m+[m
+   {[m
+[31m-    path: 'products',[m
+[31m-    component: ProductsComponent,[m
+[32m+[m[32m    path: 'images',[m
+[32m+[m[32m    component: ImagesComponent,[m
+   },[m
+[31m-  { path: 'merge', component: MergeComponent },[m
+[31m-[m
+   { path: '**', component: NF404Component },[m
+ ];[m
+ [m
+[1mdiff --git a/src/app/app.component.ts b/src/app/app.component.ts[m
+[1mindex 4302136..cb18fe1 100644[m
+[1m--- a/src/app/app.component.ts[m
+[1m+++ b/src/app/app.component.ts[m
+[36m@@ -1,23 +1,15 @@[m
+ import {Component, OnInit} from '@angular/core';[m
+[31m-import {LoginService} from "./login/loginService/login.service";[m
+ [m
+ @Component({[m
+   selector: 'app-root',[m
+   templateUrl: './app.component.html',[m
+   styleUrls: ['./app.component.css'][m
+ })[m
+[31m-export class AppComponent implements OnInit{[m
+[32m+[m[32mexport class AppComponent{[m
+   title = 'tp_angular';[m
+ [m
+ [m
+[31m-  constructor([m
+[31m-    private loginService : LoginService[m
+[31m-  ) {[m
+[31m-  }[m
+ [m
+[31m-  ngOnInit(): void {[m
+[31m-    this.loginService.refreshAuthState()[m
+[31m-  }[m
+ [m
+ [m
+ [m
+[1mdiff --git a/src/app/app.module.ts b/src/app/app.module.ts[m
+[1mindex ff57d4a..2f114ca 100644[m
+[1m--- a/src/app/app.module.ts[m
+[1m+++ b/src/app/app.module.ts[m
+[36m@@ -11,7 +11,6 @@[m [mimport { NavbarComponent } from './components/navbar/navbar.component';[m
+ import { HomeComponent } from './components/home/home.component';[m
+ import { FrontComponent } from './components/front/front.component';[m
+ import { AdminComponent } from './components/admin/admin.component';[m
+[31m-import { MasterDetailsComponent } from './cv/master-details/master-details.component';[m
+ import { DetailCvComponent } from './cv/detail-cv/detail-cv.component';[m
+ import { NF404Component } from './components/nf404/nf404.component';[m
+ import { AppRoutingModule } from './app-routing.module';[m
+[36m@@ -21,12 +20,8 @@[m [mimport { HttpClientModule } from '@angular/common/http';[m
+ import { ToastrModule } from 'ngx-toastr';[m
+ import { ListCvEmbaucheComponent } from './cv/list-cv-embauche/list-cv-embauche.component';[m
+ import { LoginComponent } from './login/login.component';[m
+[31m-import { AutocompleteComponent } from './components/autocomplete/autocomplete.component';[m
+[31m-import { MergeComponent } from './components/merge/merge.component';[m
+[31m-import { ProductsComponent } from './components/products/products.component';[m
+[31m-import { UpdateCvComponent } from './cv/update-cv/update-cv.component';[m
+[31m-import { AddCvComponent } from './cv/add-cv/add-cv.component';[m
+ import { tokenInjectionInterceptorProvider } from './token-injection.interceptor';[m
+[32m+[m[32mimport { ImagesComponent } from './components/images/images.component';[m
+ [m
+ @NgModule({[m
+   declarations: [[m
+[36m@@ -40,16 +35,11 @@[m [mimport { tokenInjectionInterceptorProvider } from './token-injection.interceptor[m
+     HomeComponent,[m
+     FrontComponent,[m
+     AdminComponent,[m
+[31m-    MasterDetailsComponent,[m
+     DetailCvComponent,[m
+     NF404Component,[m
+     ListCvEmbaucheComponent,[m
+     LoginComponent,[m
+[31m-    AutocompleteComponent,[m
+[31m-    MergeComponent,[m
+[31m-    ProductsComponent,[m
+[31m-    UpdateCvComponent,[m
+[31m-    AddCvComponent,[m
+[32m+[m[32m    ImagesComponent,[m
+   ],[m
+   imports: [[m
+     BrowserModule,[m
+[1mdiff --git a/src/app/components/autocomplete/autocomplete.component.css b/src/app/components/autocomplete/autocomplete.component.css[m
+[1mdeleted file mode 100644[m
+[1mindex e69de29..0000000[m
+[1mdiff --git a/src/app/components/autocomplete/autocomplete.component.html b/src/app/components/autocomplete/autocomplete.component.html[m
+[1mdeleted file mode 100644[m
+[1mindex 0d89f92..0000000[m
+[1m--- a/src/app/components/autocomplete/autocomplete.component.html[m
+[1m+++ /dev/null[m
+[36m@@ -1,6 +0,0 @@[m
+[31m-<form [formGroup]="form">[m
+[31m-  <input type="text" formControlName="search" class="form-control" >[m
+[31m-</form>[m
+[31m-[m
+[31m-[m
+[31m-<app-list  [cvs]="(filteredCv | async)!"></app-list>[m
+[1mdiff --git a/src/app/components/autocomplete/autocomplete.component.spec.ts b/src/app/components/autocomplete/autocomplete.component.spec.ts[m
+[1mdeleted file mode 100644[m
+[1mindex 510e1a5..0000000[m
+[1m--- a/src/app/components/autocomplete/autocomplete.component.spec.ts[m
+[1m+++ /dev/null[m
+[36m@@ -1,21 +0,0 @@[m
+[31m-import { ComponentFixture, TestBed } from '@angular/core/testing';[m
+[31m-[m
+[31m-import { AutocompleteComponent } from './autocomplete.component';[m
+[31m-[m
+[31m-describe('AutocompleteComponent', () => {[m
+[31m-  let component: AutocompleteComponent;[m
+[31m-  let fixture: ComponentFixture<AutocompleteComponent>;[m
+[31m-[m
+[31m-  beforeEach(() => {[m
+[31m-    TestBed.configureTestingModule({[m
+[31m-      declarations: [AutocompleteComponent][m
+[31m-    });[m
+[31m-    fixture = TestBed.createComponent(AutocompleteComponent);[m
+[31m-    component = fixture.componentInstance;[m
+[31m-    fixture.detectChanges();[m
+[31m-  });[m
+[31m-[m
+[31m-  it('should create', () => {[m
+[31m-    expect(component).toBeTruthy();[m
+[31m-  });[m
+[31m-});[m
+[1mdiff --git a/src/app/components/autocomplete/autocomplete.component.ts b/src/app/components/autocomplete/autocomplete.component.ts[m
+[1mdeleted file mode 100644[m
+[1mindex 9dd1db9..0000000[m
+[1m--- a/src/app/components/autocomplete/autocomplete.component.ts[m
+[1m+++ /dev/null[m
+[36m@@ -1,35 +0,0 @@[m
+[31m-import {Component} from '@angular/core';[m
+[31m-import {FormControl, FormGroup} from "@angular/forms";[m
+[31m-import {CvService} from "../../cv/services/cv.service";[m
+[31m-import {debounce, debounceTime, distinctUntilChanged, Observable, switchMap} from "rxjs";[m
+[31m-import {Cv} from "../../cv/model/cv";[m
+[31m-[m
+[31m-@Component({[m
+[31m-  selector: 'app-autocomplete',[m
+[31m-  templateUrl: './autocomplete.component.html',[m
+[31m-  styleUrls: ['./autocomplete.component.css'][m
+[31m-})[m
+[31m-export class AutocompleteComponent {[m
+[31m-[m
+[31m-  filteredCv: Observable<Cv[]> = new Observable<Cv[]>()[m
+[31m-  form : FormGroup[m
+[31m-[m
+[31m-  constructor([m
+[31m-    private cvService : CvService[m
+[31m-  ) {[m
+[31m-    this.form = new FormGroup({[m
+[31m-      search : new FormControl()[m
+[31m-    })[m
+[31m-    this.filteredCv =this.form.valueChanges.pipe([m
+[31m-        debounceTime(300),[m
+[31m-        distinctUntilChanged(),[m
+[31m-        switchMap( (value) => this.cvService.findByName(value))[m
+[31m-    )[m
+[31m-[m
+[31m-  }[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-}[m
+[1mdiff --git a/src/app/components/merge/merge.component.css b/src/app/components/merge/merge.component.css[m
+[1mdeleted file mode 100644[m
+[1mindex e69de29..0000000[m
+[1mdiff --git a/src/app/components/merge/merge.component.html b/src/app/components/merge/merge.component.html[m
+[1mdeleted file mode 100644[m
+[1mindex 4918b7b..0000000[m
+[1m--- a/src/app/components/merge/merge.component.html[m
+[1m+++ /dev/null[m
+[36m@@ -1,19 +0,0 @@[m
+[31m-<form [formGroup]="form">[m
+[31m-    <input type="number" class="form-control" formControlName="field1"  >[m
+[31m-    <button class="btn btn-danger" style="margin-bottom: 2%;" (click)="terminateFirstStream()">[m
+[31m-        Terminate Steam 1[m
+[31m-    </button>[m
+[31m-    <input type="number" class="form-control" formControlName="field2" >[m
+[31m-    <button class="btn btn-danger" style="margin-bottom: 2%;" (click)="terminateSecondStream()">[m
+[31m-        Terminate Steam 2[m
+[31m-    </button>[m
+[31m-</form>[m
+[31m-<div >[m
+[31m-    Merge : {{ merged$ | async }}[m
+[31m-</div>[m
+[31m-<div >[m
+[31m-    Scan : {{ scanned$ | async }}[m
+[31m-</div>[m
+[31m-<div >[m
+[31m-    Reduce : {{ reduced$ | async }}[m
+[31m-</div>[m
+[1mdiff --git a/src/app/components/merge/merge.component.spec.ts b/src/app/components/merge/merge.component.spec.ts[m
+[1mdeleted file mode 100644[m
+[1mindex caf0daa..0000000[m
+[1m--- a/src/app/components/merge/merge.component.spec.ts[m
+[1m+++ /dev/null[m
+[36m@@ -1,21 +0,0 @@[m
+[31m-import { ComponentFixture, TestBed } from '@angular/core/testing';[m
+[31m-[m
+[31m-import { MergeComponent } from './merge.component';[m
+[31m-[m
+[31m-describe('MergeComponent', () => {[m
+[31m-  let component: MergeComponent;[m
+[31m-  let fixture: ComponentFixture<MergeComponent>;[m
+[31m-[m
+[31m-  beforeEach(() => {[m
+[31m-    TestBed.configureTestingModule({[m
+[31m-      declarations: [MergeComponent][m
+[31m-    });[m
+[31m-    fixture = TestBed.createComponent(MergeComponent);[m
+[31m-    component = fixture.componentInstance;[m
+[31m-    fixture.detectChanges();[m
+[31m-  });[m
+[31m-[m
+[31m-  it('should create', () => {[m
+[31m-    expect(component).toBeTruthy();[m
+[31m-  });[m
+[31m-});[m
+[1mdiff --git a/src/app/components/merge/merge.component.ts b/src/app/components/merge/merge.component.ts[m
+[1mdeleted file mode 100644[m
+[1mindex 086eac1..0000000[m
+[1m--- a/src/app/components/merge/merge.component.ts[m
+[1m+++ /dev/null[m
+[36m@@ -1,80 +0,0 @@[m
+[31m-import { Component } from '@angular/core';[m
+[31m-import {FormControl, FormGroup} from "@angular/forms";[m
+[31m-import {BehaviorSubject, map, merge, Observable, reduce, scan} from "rxjs";[m
+[31m-[m
+[31m-@Component({[m
+[31m-    selector: 'app-merge',[m
+[31m-    templateUrl: './merge.component.html',[m
+[31m-    styleUrls: ['./merge.component.css'][m
+[31m-})[m
+[31m-export class MergeComponent {[m
+[31m-[m
+[31m-[m
+[31m-    form : FormGroup;[m
+[31m-[m
+[31m-    var1$ = new BehaviorSubject(0)[m
+[31m-    var2$ = new BehaviorSubject(0)[m
+[31m-    merged$= new Observable<number>()[m
+[31m-    scanned$= new Observable<number>()[m
+[31m-    reduced$= new Observable<number>();[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-    terminateFirstStream(){[m
+[31m-        this.var1$.complete()[m
+[31m-    }[m
+[31m-[m
+[31m-    terminateSecondStream(){[m
+[31m-        this.var2$.complete()[m
+[31m-    }[m
+[31m-[m
+[31m-    constructor() {[m
+[31m-        this.form = new FormGroup({[m
+[31m-            field1 : new FormControl(),[m
+[31m-            field2 : new FormControl()[m
+[31m-        });[m
+[31m-[m
+[31m-        this.form.get("field1")!.valueChanges!.subscribe([m
+[31m-            (value)=>{[m
+[31m-                if (value){[m
+[31m-                    this.var1$.next(value)[m
+[31m-                }[m
+[31m-            }[m
+[31m-        );[m
+[31m-[m
+[31m-[m
+[31m-        this.form.get("field2")!.valueChanges!.subscribe([m
+[31m-            (value) => {[m
+[31m-                if (value) {[m
+[31m-                    this.var2$.next(value)[m
+[31m-                }[m
+[31m-            }[m
+[31m-        );[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-        this.merged$ =merge(this.var1$,this.var2$).pipe([m
+[31m-            map(value => value)[m
+[31m-        )[m
+[31m-[m
+[31m-        this.scanned$ = this.merged$.pipe([m
+[31m-            scan((x,y)=>{[m
+[31m-                console.log("x",x)[m
+[31m-                console.log("y",y)[m
+[31m-                if(y)[m
+[31m-                    return x+y[m
+[31m-                return x[m
+[31m-            }))[m
+[31m-        this.reduced$ = this.merged$.pipe([m
+[31m-            reduce((x,y)=>{[m
+[31m-                if(y)[m
+[31m-                    return x+y[m
+[31m-                return x[m
+[31m-            }))[m
+[31m-[m
+[31m-    }[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-}[m
+[1mdiff --git a/src/app/components/navbar/navbar.component.html b/src/app/components/navbar/navbar.component.html[m
+[1mindex 2d7c4e4..093779e 100644[m
+[1m--- a/src/app/components/navbar/navbar.component.html[m
+[1m+++ b/src/app/components/navbar/navbar.component.html[m
+[36m@@ -32,39 +32,12 @@[m
+         <a[m
+           class="nav-link"[m
+           aria-current="page"[m
+[31m-          [routerLink]="['cv','add']"[m
+[32m+[m[32m          [routerLink]="['images']"[m
+           routerLinkActive="active text-primary"[m
+[31m-          >Add Cv</a[m
+[32m+[m[32m          >Images</a[m
+         >[m
+       </div>[m
+[31m-        <div class="navbar-nav">[m
+[31m-            <a[m
+[31m-                    class="nav-link"[m
+[31m-                    aria-current="page"[m
+[31m-                    [routerLink]="['cv','list']"[m
+[31m-                    routerLinkActive="active text-primary"[m
+[31m-            >List</a[m
+[31m-            >[m
+[31m-        </div>[m
+[31m-        <div class="navbar-nav">[m
+[31m-            <a[m
+[31m-                    class="nav-link"[m
+[31m-                    aria-current="page"[m
+[31m-                    [routerLink]="['products']"[m
+[31m-                    routerLinkActive="active text-primary"[m
+[31m-            >Products</a[m
+[31m-            >[m
+[31m-        </div>[m
+[31m-        <div class="navbar-nav">[m
+[31m-            <a[m
+[31m-                    class="nav-link"[m
+[31m-                    aria-current="page"[m
+[31m-                    [routerLink]="['merge']"[m
+[31m-                   
